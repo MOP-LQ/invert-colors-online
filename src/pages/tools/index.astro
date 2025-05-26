@@ -1,0 +1,72 @@
+---
+import ToolLayout from "@/layouts/ToolLayout.astro";
+import LinkButton from "@/components/LinkButton.astro";
+---
+
+<ToolLayout
+  title="Online Tools - Invert colors online"
+  description="Collection of useful online tools for image processing and more"
+>
+  <section class="mb-8">
+    <h1 class="text-3xl font-bold mb-4">Online Tools</h1>
+    <p class="text-lg text-foreground/80 mb-8">
+      A collection of useful online tools to help you with various tasks.
+    </p>
+  </section>
+
+  <section class="grid gap-6 md:grid-cols-2">
+    <!-- Image Tools -->
+    <div class="border border-border rounded-lg p-6 bg-background hover:bg-muted/20 transition-colors">
+      <h2 class="text-xl font-semibold mb-3 text-accent">Image Tools</h2>
+      <div class="space-y-3">
+        <div class="border-l-4 border-accent pl-4">
+          <h3 class="font-medium mb-2">
+            <a href="/tools/image-inverter" class="hover:text-accent transition-colors">
+              Image Color Inverter
+            </a>
+          </h3>
+          <p class="text-sm text-foreground/70">
+            Invert the colors of your images to create negative effects. Perfect for artistic purposes or accessibility needs.
+          </p>
+          <LinkButton
+            href="/tools/image-inverter"
+            class="mt-3 inline-block text-sm px-4 py-2 bg-accent text-background rounded hover:bg-accent/90 transition-colors"
+          >
+            Try Now →
+          </LinkButton>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coming Soon -->
+    <div class="border border-border rounded-lg p-6 bg-background opacity-60">
+      <h2 class="text-xl font-semibold mb-3">Coming Soon</h2>
+      <div class="space-y-3">
+        <div class="border-l-4 border-muted pl-4">
+          <h3 class="font-medium mb-2">More Tools</h3>
+          <p class="text-sm text-foreground/70">
+            We're working on adding more useful tools. Stay tuned!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-12 text-center">
+    <h2 class="text-2xl font-semibold mb-4">Why Use Our Tools?</h2>
+    <div class="grid gap-4 md:grid-cols-3 text-sm">
+      <div class="p-4 border border-border rounded">
+        <h3 class="font-medium mb-2">🔒 Privacy First</h3>
+        <p class="text-foreground/70">All processing happens in your browser. Your files never leave your device.</p>
+      </div>
+      <div class="p-4 border border-border rounded">
+        <h3 class="font-medium mb-2">⚡ Fast & Free</h3>
+        <p class="text-foreground/70">No registration required. All tools are completely free to use.</p>
+      </div>
+      <div class="p-4 border border-border rounded">
+        <h3 class="font-medium mb-2">📱 Works Everywhere</h3>
+        <p class="text-foreground/70">Responsive design that works on desktop, tablet, and mobile devices.</p>
+      </div>
+    </div>
+  </section>
+</ToolLayout>

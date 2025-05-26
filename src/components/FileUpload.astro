@@ -1,0 +1,126 @@
+---
+export interface Props {
+  id: string;
+  accept?: string;
+  maxSize?: number; // in MB
+  onFileSelect?: string; // JavaScript function name
+}
+
+const {
+  id,
+  accept = "image/*",
+  maxSize = 10,
+  onFileSelect = "handleFileSelect"
+} = Astro.props;
+---
+
+<div class="file-upload-container">
+  <div
+    id={`${id}-dropzone`}
+    class="border-2 border-dashed border-border rounded-lg p-8 text-center transition-colors hover:border-accent hover:bg-accent/5 cursor-pointer"
+  >
+    <div class="space-y-4">
+      <div class="text-4xl">📁</div>
+      <div>
+        <p class="text-lg font-medium">Drop your image here</p>
+        <p class="text-sm text-foreground/70">or click to browse</p>
+      </div>
+      <div class="text-xs text-foreground/60">
+        Supported formats: JPG, PNG, GIF, WebP (max {maxSize}MB)
+      </div>
+    </div>
+  </div>
+
+  <input
+    type="file"
+    id={id}
+    accept={accept}
+    class="hidden"
+    data-max-size={maxSize}
+  />
+
+  <div id={`${id}-error`} class="mt-2 text-sm text-red-500 hidden"></div>
+</div>
+
+<script is:inline define:vars={{ id, onFileSelect }}>
+  function initFileUpload() {
+    const fileInput = document.getElementById(id);
+    const dropzone = document.getElementById(`${id}-dropzone`);
+    const errorDiv = document.getElementById(`${id}-error`);
+    const maxSize = parseInt(fileInput.dataset.maxSize) * 1024 * 1024; // Convert MB to bytes
+
+    function showError(message) {
+      errorDiv.textContent = message;
+      errorDiv.classList.remove('hidden');
+    }
+
+    function hideError() {
+      errorDiv.classList.add('hidden');
+    }
+
+    function validateFile(file) {
+      hideError();
+
+      if (!file.type.startsWith('image/')) {
+        showError('Please select a valid image file.');
+        return false;
+      }
+
+      if (file.size > maxSize) {
+        showError(`File size must be less than ${fileInput.dataset.maxSize}MB.`);
+        return false;
+      }
+
+      return true;
+    }
+
+    function handleFile(file) {
+      if (validateFile(file)) {
+        // Call the provided callback function
+        if (typeof window[onFileSelect] === 'function') {
+          window[onFileSelect](file);
+        }
+      }
+    }
+
+    // Click to upload
+    dropzone.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    // File input change
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        handleFile(file);
+      }
+    });
+
+    // Drag and drop
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('border-accent', 'bg-accent/10');
+    });
+
+    dropzone.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('border-accent', 'bg-accent/10');
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('border-accent', 'bg-accent/10');
+
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        handleFile(files[0]);
+      }
+    });
+  }
+
+  // Initialize on page load
+  initFileUpload();
+
+  // Re-initialize on view transitions
+  document.addEventListener('astro:after-swap', initFileUpload);
+</script>

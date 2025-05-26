@@ -1,0 +1,235 @@
+---
+import ToolLayout from "@/layouts/ToolLayout.astro";
+---
+
+<ToolLayout
+  title="Test Image Inverter - Invert colors online"
+  description="Test page for image inverter functionality"
+>
+  <section class="mb-8">
+    <h1 class="text-3xl font-bold mb-4">Test Image Inverter</h1>
+    <p class="text-lg text-foreground/80 mb-6">
+      This is a test page to verify the image inverter functionality works correctly.
+    </p>
+  </section>
+
+  <!-- Test Canvas -->
+  <section class="mb-8">
+    <h2 class="text-xl font-semibold mb-4">Canvas Test</h2>
+    <div class="grid gap-4 md:grid-cols-2">
+      <div>
+        <h3 class="font-medium mb-2">Original Test Pattern</h3>
+        <canvas id="test-canvas-original" width="200" height="200" class="border border-border"></canvas>
+      </div>
+      <div>
+        <h3 class="font-medium mb-2">Inverted Test Pattern</h3>
+        <canvas id="test-canvas-inverted" width="200" height="200" class="border border-border"></canvas>
+      </div>
+    </div>
+    <button
+      id="test-invert-btn"
+      class="mt-4 px-4 py-2 bg-accent text-background rounded hover:bg-accent/90 transition-colors"
+    >
+      Test Invert Function
+    </button>
+  </section>
+
+  <!-- File Upload Test -->
+  <section class="mb-8">
+    <h2 class="text-xl font-semibold mb-4">File Upload Test</h2>
+    <div class="border border-border rounded-lg p-4">
+      <input type="file" id="test-file-input" accept="image/*" class="mb-4" />
+      <div class="grid gap-4 md:grid-cols-2">
+        <div>
+          <h3 class="font-medium mb-2">Uploaded Image</h3>
+          <img id="test-uploaded-image" class="max-w-full h-auto border border-border" style="max-height: 200px;" />
+        </div>
+        <div>
+          <h3 class="font-medium mb-2">Inverted Result</h3>
+          <canvas id="test-result-canvas" class="border border-border" style="max-height: 200px;"></canvas>
+        </div>
+      </div>
+      <button
+        id="test-process-btn"
+        class="mt-4 px-4 py-2 bg-accent text-background rounded hover:bg-accent/90 transition-colors"
+        disabled
+      >
+        Process Uploaded Image
+      </button>
+    </div>
+  </section>
+
+  <!-- Test Results -->
+  <section>
+    <h2 class="text-xl font-semibold mb-4">Test Results</h2>
+    <div id="test-results" class="space-y-2 text-sm">
+      <div class="text-foreground/70">No tests run yet...</div>
+    </div>
+  </section>
+</ToolLayout>
+
+<script>
+  function initTests() {
+    const originalCanvas = document.getElementById('test-canvas-original') as HTMLCanvasElement;
+    const invertedCanvas = document.getElementById('test-canvas-inverted') as HTMLCanvasElement;
+    const testInvertBtn = document.getElementById('test-invert-btn');
+    const testFileInput = document.getElementById('test-file-input') as HTMLInputElement;
+    const testUploadedImage = document.getElementById('test-uploaded-image') as HTMLImageElement;
+    const testResultCanvas = document.getElementById('test-result-canvas') as HTMLCanvasElement;
+    const testProcessBtn = document.getElementById('test-process-btn');
+    const testResults = document.getElementById('test-results');
+
+    if (!originalCanvas || !invertedCanvas) return;
+
+    const originalCtx = originalCanvas.getContext('2d');
+    const invertedCtx = invertedCanvas.getContext('2d');
+
+    function addTestResult(message: string, success: boolean = true) {
+      const div = document.createElement('div');
+      div.className = success ? 'text-green-600' : 'text-red-600';
+      div.textContent = `${success ? '✓' : '✗'} ${message}`;
+      testResults?.appendChild(div);
+    }
+
+    function clearTestResults() {
+      if (testResults) {
+        testResults.innerHTML = '<div class="text-foreground/70">Running tests...</div>';
+      }
+    }
+
+    // Draw test pattern
+    function drawTestPattern(ctx: CanvasRenderingContext2D) {
+      // Clear canvas
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, 200, 200);
+
+      // Draw colored squares
+      ctx.fillStyle = 'red';
+      ctx.fillRect(0, 0, 100, 100);
+
+      ctx.fillStyle = 'green';
+      ctx.fillRect(100, 0, 100, 100);
+
+      ctx.fillStyle = 'blue';
+      ctx.fillRect(0, 100, 100, 100);
+
+      ctx.fillStyle = 'black';
+      ctx.fillRect(100, 100, 100, 100);
+    }
+
+    // Test invert function
+    function testInvertFunction() {
+      clearTestResults();
+
+      try {
+        if (!originalCtx || !invertedCtx) {
+          addTestResult('Canvas context not available', false);
+          return;
+        }
+
+        // Draw test pattern
+        drawTestPattern(originalCtx);
+        addTestResult('Test pattern drawn successfully');
+
+        // Copy to inverted canvas
+        invertedCtx.drawImage(originalCanvas, 0, 0);
+
+        // Get image data
+        const imageData = invertedCtx.getImageData(0, 0, 200, 200);
+        const data = imageData.data;
+
+        // Invert colors
+        for (let i = 0; i < data.length; i += 4) {
+          data[i] = 255 - data[i];     // Red
+          data[i + 1] = 255 - data[i + 1]; // Green
+          data[i + 2] = 255 - data[i + 2]; // Blue
+          // Alpha channel (data[i + 3]) remains unchanged
+        }
+
+        // Put inverted image data back
+        invertedCtx.putImageData(imageData, 0, 0);
+
+        addTestResult('Color inversion completed successfully');
+
+        // Verify inversion by checking a few pixels
+        const originalData = originalCtx.getImageData(0, 0, 200, 200).data;
+        const invertedData = invertedCtx.getImageData(0, 0, 200, 200).data;
+
+        // Check red square (should become cyan)
+        const redPixelIndex = 0; // Top-left pixel
+        const originalRed = originalData[redPixelIndex];
+        const invertedRed = invertedData[redPixelIndex];
+
+        if (Math.abs((255 - originalRed) - invertedRed) < 2) {
+          addTestResult('Pixel inversion verification passed');
+        } else {
+          addTestResult(`Pixel inversion verification failed: expected ${255 - originalRed}, got ${invertedRed}`, false);
+        }
+
+      } catch (error) {
+        addTestResult(`Test failed with error: ${error}`, false);
+      }
+    }
+
+    // File upload test
+    testFileInput?.addEventListener('change', (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          testUploadedImage.src = e.target?.result as string;
+          testUploadedImage.onload = () => {
+            const processBtn = testProcessBtn as HTMLButtonElement;
+            if (processBtn) {
+              processBtn.disabled = false;
+            }
+            addTestResult('Image uploaded successfully');
+          };
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Process uploaded image
+    testProcessBtn?.addEventListener('click', () => {
+      if (!testUploadedImage.src) return;
+
+      const ctx = testResultCanvas.getContext('2d');
+      if (!ctx) return;
+
+      // Set canvas size to match image
+      testResultCanvas.width = testUploadedImage.naturalWidth;
+      testResultCanvas.height = testUploadedImage.naturalHeight;
+
+      // Draw image to canvas
+      ctx.drawImage(testUploadedImage, 0, 0);
+
+      // Get and invert image data
+      const imageData = ctx.getImageData(0, 0, testResultCanvas.width, testResultCanvas.height);
+      const data = imageData.data;
+
+      for (let i = 0; i < data.length; i += 4) {
+        data[i] = 255 - data[i];     // Red
+        data[i + 1] = 255 - data[i + 1]; // Green
+        data[i + 2] = 255 - data[i + 2]; // Blue
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+      addTestResult('Uploaded image processed successfully');
+    });
+
+    // Test button click
+    testInvertBtn?.addEventListener('click', testInvertFunction);
+
+    // Draw initial test pattern
+    if (originalCtx) {
+      drawTestPattern(originalCtx);
+    }
+  }
+
+  // Initialize tests
+  initTests();
+
+  // Re-initialize on view transitions
+  document.addEventListener('astro:after-swap', initTests);
+</script>

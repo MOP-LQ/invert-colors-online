@@ -1,0 +1,141 @@
+---
+import ToolLayout from "@/layouts/ToolLayout.astro";
+import ImageInverterComponent from "@/components/ImageInverter.astro";
+import LinkButton from "@/components/LinkButton.astro";
+---
+
+<ToolLayout
+  title="Image Color Inverter - Invert colors online"
+  description="Invert the colors of your images online. Create negative effects for artistic purposes or accessibility needs."
+>
+  <!-- Header Section -->
+  <section class="mb-8">
+    <div class="flex items-center gap-4 mb-4">
+      <LinkButton
+        href="/tools"
+        class="text-sm px-3 py-1 border border-border rounded hover:bg-muted/20 transition-colors"
+      >
+        ← Back to Tools
+      </LinkButton>
+    </div>
+
+    <h1 class="text-3xl font-bold mb-4">Image Color Inverter</h1>
+    <p class="text-lg text-foreground/80 mb-6">
+      Transform your images by inverting their colors to create stunning negative effects.
+      Perfect for artistic projects, accessibility needs, or just for fun!
+    </p>
+  </section>
+
+  <!-- Tool Section -->
+  <section class="mb-12">
+    <ImageInverterComponent />
+  </section>
+
+  <!-- Information Section -->
+  <section class="space-y-8">
+    <!-- How it works -->
+    <div class="border border-border rounded-lg p-6">
+      <h2 class="text-xl font-semibold mb-4">How It Works</h2>
+      <div class="space-y-3 text-foreground/80">
+        <p>
+          Color inversion works by subtracting each color channel value from 255 (the maximum value for 8-bit color channels).
+          This creates a negative effect similar to old film photography.
+        </p>
+        <ul class="list-disc list-inside space-y-1 ml-4">
+          <li>Red channel: 255 - original red value</li>
+          <li>Green channel: 255 - original green value</li>
+          <li>Blue channel: 255 - original blue value</li>
+          <li>Alpha (transparency) remains unchanged</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="grid gap-4 md:grid-cols-2">
+      <div class="border border-border rounded-lg p-4">
+        <h3 class="font-semibold mb-2 text-accent">🔒 Privacy Protected</h3>
+        <p class="text-sm text-foreground/70">
+          All image processing happens locally in your browser. Your images never leave your device.
+        </p>
+      </div>
+
+      <div class="border border-border rounded-lg p-4">
+        <h3 class="font-semibold mb-2 text-accent">⚡ Instant Processing</h3>
+        <p class="text-sm text-foreground/70">
+          Fast client-side processing with immediate results. No waiting for server uploads.
+        </p>
+      </div>
+
+      <div class="border border-border rounded-lg p-4">
+        <h3 class="font-semibold mb-2 text-accent">📱 Mobile Friendly</h3>
+        <p class="text-sm text-foreground/70">
+          Works perfectly on desktop, tablet, and mobile devices with responsive design.
+        </p>
+      </div>
+
+      <div class="border border-border rounded-lg p-4">
+        <h3 class="font-semibold mb-2 text-accent">🎨 Multiple Formats</h3>
+        <p class="text-sm text-foreground/70">
+          Supports JPG, PNG, GIF, and WebP formats. Download results in PNG format.
+        </p>
+      </div>
+    </div>
+
+    <!-- Use Cases -->
+    <div class="border border-border rounded-lg p-6">
+      <h2 class="text-xl font-semibold mb-4">Common Use Cases</h2>
+      <div class="grid gap-4 md:grid-cols-2">
+        <div>
+          <h3 class="font-medium mb-2">🎨 Artistic Effects</h3>
+          <p class="text-sm text-foreground/70">
+            Create dramatic negative effects for photography and digital art projects.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-medium mb-2">♿ Accessibility</h3>
+          <p class="text-sm text-foreground/70">
+            Help users with visual impairments by creating high-contrast versions of images.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-medium mb-2">🔬 Scientific Analysis</h3>
+          <p class="text-sm text-foreground/70">
+            Enhance visibility of certain features in scientific or medical imaging.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-medium mb-2">🎭 Creative Design</h3>
+          <p class="text-sm text-foreground/70">
+            Generate unique variations of logos, graphics, and design elements.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="bg-accent/5 border border-accent/20 rounded-lg p-6">
+      <h2 class="text-xl font-semibold mb-4">💡 Tips for Best Results</h2>
+      <ul class="space-y-2 text-foreground/80">
+        <li class="flex items-start gap-2">
+          <span class="text-accent">•</span>
+          <span>High contrast images work best for dramatic inversion effects</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="text-accent">•</span>
+          <span>Images with bright backgrounds become dark, and vice versa</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="text-accent">•</span>
+          <span>Text and line art often become more readable after inversion</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="text-accent">•</span>
+          <span>Try inverting screenshots for a dark mode effect</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+</ToolLayout>
