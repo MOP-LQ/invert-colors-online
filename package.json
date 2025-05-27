@@ -10,8 +10,7 @@
     "astro": "astro",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
-    "lint": "eslint .",
-    "deploy": "npx wrangler deploy --assets=./dist"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.11",
