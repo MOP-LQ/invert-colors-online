@@ -7,6 +7,7 @@ import Socials from "@/components/Socials.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import Card from "@/components/Card.astro";
 import Hr from "@/components/Hr.astro";
+import ImageInverter from "@/components/ImageInverter.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
 
 import { SITE } from "@/config";
@@ -19,7 +20,10 @@ const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 ---
 
-<Layout>
+<Layout
+  title="Invert Colors Online - Free Image Color Inverter Tool"
+  description="Transform your images instantly with our free online color inverter tool. Create stunning negative effects, improve accessibility, and process images locally in your browser for complete privacy."
+>
   <Header />
   <main id="main-content" data-layout="index">
     <section id="hero" class="pt-8 pb-6">
@@ -28,18 +32,12 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       </h1>
 
       <p>
-        Your go-to collection of online English tools and utilities.
-        Process images, manipulate text, and perform various tasks - all in your browser
+        Your go-to collection of online tools and utilities for image processing and more.
+        Transform images, manipulate colors, and perform various tasks - all in your browser
         with complete privacy and security.
       </p>
       <p class="mt-2">
-        Start with our
-        <LinkButton
-          class="underline decoration-dashed underline-offset-4 hover:text-accent"
-          href="/tools/image-inverter"
-        >
-          Image Color Inverter
-        </LinkButton> or explore all
+        Try our featured Image Color Inverter tool below, or explore all
         <LinkButton
           class="underline decoration-dashed underline-offset-4 hover:text-accent"
           href="/tools"
@@ -60,45 +58,82 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
     <Hr />
 
-    <!-- Featured Tools Section -->
-    <section id="featured-tools" class="pt-12 pb-6">
-      <h2 class="text-2xl font-semibold tracking-wide">Featured Tools</h2>
+    <!-- Image Inverter Tool Section -->
+    <section id="image-inverter-tool" class="pt-12 pb-6">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold tracking-wide mb-4">🎨 Image Color Inverter</h2>
+        <p class="text-lg text-foreground/80 max-w-2xl mx-auto">
+          Transform your images instantly by inverting their colors. Create stunning negative effects,
+          improve accessibility, or just have fun with your photos - all processed locally in your browser
+          for complete privacy.
+        </p>
+      </div>
+
+      <div class="max-w-4xl mx-auto">
+        <ImageInverter />
+      </div>
+
+      <!-- Features -->
+      <div class="mt-8 grid gap-4 md:grid-cols-3 max-w-3xl mx-auto">
+        <div class="text-center p-4 border border-border rounded-lg">
+          <div class="text-2xl mb-2">🔒</div>
+          <h3 class="font-semibold mb-1">Privacy First</h3>
+          <p class="text-sm text-foreground/70">All processing happens in your browser. No uploads to servers.</p>
+        </div>
+        <div class="text-center p-4 border border-border rounded-lg">
+          <div class="text-2xl mb-2">⚡</div>
+          <h3 class="font-semibold mb-1">Instant Results</h3>
+          <p class="text-sm text-foreground/70">See your inverted image immediately with one click.</p>
+        </div>
+        <div class="text-center p-4 border border-border rounded-lg">
+          <div class="text-2xl mb-2">💾</div>
+          <h3 class="font-semibold mb-1">Easy Download</h3>
+          <p class="text-sm text-foreground/70">Download your processed image in high quality.</p>
+        </div>
+      </div>
+    </section>
+
+    <Hr />
+
+    <!-- Additional Tools Section -->
+    <section id="additional-tools" class="pt-12 pb-6">
+      <h2 class="text-2xl font-semibold tracking-wide">More Tools & Features</h2>
       <div class="mt-6 grid gap-6 md:grid-cols-2">
         <div class="border border-border rounded-lg p-6 hover:bg-muted/10 transition-colors">
-          <h3 class="text-xl font-semibold mb-3 text-accent">🎨 Image Color Inverter</h3>
+          <h3 class="text-xl font-semibold mb-3 text-accent">🖼️ Black & White Converter</h3>
           <p class="text-foreground/80 mb-4">
-            Transform your images by inverting their colors to create stunning negative effects.
-            Perfect for artistic projects, accessibility needs, or just for fun!
+            Convert your colorful images to elegant black and white or grayscale versions.
+            Perfect for professional photography and artistic effects.
           </p>
           <div class="flex flex-wrap gap-2 mb-4">
-            <span class="text-xs px-2 py-1 bg-accent/10 text-accent rounded">Privacy First</span>
-            <span class="text-xs px-2 py-1 bg-accent/10 text-accent rounded">No Upload</span>
-            <span class="text-xs px-2 py-1 bg-accent/10 text-accent rounded">Instant Results</span>
-          </div>
-          <LinkButton
-            href="/tools/image-inverter"
-            class="inline-block px-4 py-2 bg-accent text-background rounded hover:bg-accent/90 transition-colors"
-          >
-            Try Now →
-          </LinkButton>
-        </div>
-
-        <div class="border border-border rounded-lg p-6 opacity-60">
-          <h3 class="text-xl font-semibold mb-3">🚀 More Tools Coming Soon</h3>
-          <p class="text-foreground/80 mb-4">
-            We're working on adding more useful tools including text processors,
-            color utilities, converters, and much more!
-          </p>
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="text-xs px-2 py-1 bg-muted/20 text-foreground/60 rounded">Text Tools</span>
-            <span class="text-xs px-2 py-1 bg-muted/20 text-foreground/60 rounded">Converters</span>
-            <span class="text-xs px-2 py-1 bg-muted/20 text-foreground/60 rounded">Utilities</span>
+            <span class="text-xs px-2 py-1 bg-accent/10 text-accent rounded">Coming Soon</span>
+            <span class="text-xs px-2 py-1 bg-accent/10 text-accent rounded">High Quality</span>
+            <span class="text-xs px-2 py-1 bg-accent/10 text-accent rounded">Multiple Formats</span>
           </div>
           <LinkButton
             href="/tools"
+            class="inline-block px-4 py-2 border border-accent text-accent rounded hover:bg-accent hover:text-background transition-colors"
+          >
+            View All Tools →
+          </LinkButton>
+        </div>
+
+        <div class="border border-border rounded-lg p-6 hover:bg-muted/10 transition-colors">
+          <h3 class="text-xl font-semibold mb-3">📚 Learn More</h3>
+          <p class="text-foreground/80 mb-4">
+            Discover tutorials, tips, and guides about image processing, color theory,
+            and how to get the most out of our tools.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="text-xs px-2 py-1 bg-muted/20 text-foreground/60 rounded">Tutorials</span>
+            <span class="text-xs px-2 py-1 bg-muted/20 text-foreground/60 rounded">Tips & Tricks</span>
+            <span class="text-xs px-2 py-1 bg-muted/20 text-foreground/60 rounded">Guides</span>
+          </div>
+          <LinkButton
+            href="/posts"
             class="inline-block px-4 py-2 border border-border text-foreground rounded hover:bg-muted/20 transition-colors"
           >
-            View All Tools
+            Read Articles →
           </LinkButton>
         </div>
       </div>

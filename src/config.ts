@@ -1,8 +1,8 @@
 export const SITE = {
-  website: "https://astro-paper.pages.dev/", // replace this with your deployed domain
-  author: "Sat Naing",
-  profile: "https://satnaing.dev/",
-  desc: "Online English tools and utilities for image processing and more.",
+  website: "https://invert-colors-online.pages.dev/", // replace this with your deployed domain
+  author: "Mark119M",
+  profile: "https://x.com/Mark119M",
+  desc: "Free online image color inverter tool. Transform images instantly with negative effects, improve accessibility, and process images locally for complete privacy.",
   title: "Invert colors online",
   ogImage: "astropaper-og.jpg",
   lightAndDarkMode: true,
