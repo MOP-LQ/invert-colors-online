@@ -26,42 +26,10 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 >
   <Header />
   <main id="main-content" data-layout="index">
-    <section id="hero" class="pt-8 pb-6">
-      <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
-        Welcome to Invert colors online
-      </h1>
-
-      <p>
-        Your go-to collection of online tools and utilities for image processing and more.
-        Transform images, manipulate colors, and perform various tasks - all in your browser
-        with complete privacy and security.
-      </p>
-      <p class="mt-2">
-        Try our featured Image Color Inverter tool below, or explore all
-        <LinkButton
-          class="underline decoration-dashed underline-offset-4 hover:text-accent"
-          href="/tools"
-        >
-          available tools
-        </LinkButton>.
-      </p>
-      {
-        // only display if at least one social link is enabled
-        SOCIALS.length > 0 && (
-          <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
-            <div class="mr-2 mb-1 whitespace-nowrap sm:mb-0">Social Links:</div>
-            <Socials />
-          </div>
-        )
-      }
-    </section>
-
-    <Hr />
-
-    <!-- Image Inverter Tool Section -->
-    <section id="image-inverter-tool" class="pt-12 pb-6">
+    <!-- Image Inverter Tool Section - First Thing Users See -->
+    <section id="image-inverter-tool" class="pt-8 pb-6">
       <div class="text-center mb-8">
-        <h2 class="text-3xl font-bold tracking-wide mb-4">🎨 Image Color Inverter</h2>
+        <h1 class="text-4xl font-bold tracking-wide mb-4 sm:text-5xl">🎨 Image Color Inverter</h1>
         <p class="text-lg text-foreground/80 max-w-2xl mx-auto">
           Transform your images instantly by inverting their colors. Create stunning negative effects,
           improve accessibility, or just have fun with your photos - all processed locally in your browser
@@ -71,6 +39,14 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
       <div class="max-w-4xl mx-auto">
         <ImageInverter />
+      </div>
+
+      <!-- Convert Black Image to White - Prominent Call-to-Action -->
+      <div class="mt-8 text-center">
+        <div class="inline-block bg-gradient-to-r from-accent to-accent/80 text-background px-8 py-4 rounded-lg shadow-lg">
+          <h2 class="text-2xl font-bold mb-2">Convert Black Image to White</h2>
+          <p class="text-background/90">Upload your image above and click "Invert Colors" to transform black to white instantly!</p>
+        </div>
       </div>
 
       <!-- Features -->
@@ -89,6 +65,40 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
           <div class="text-2xl mb-2">💾</div>
           <h3 class="font-semibold mb-1">Easy Download</h3>
           <p class="text-sm text-foreground/70">Download your processed image in high quality.</p>
+        </div>
+      </div>
+    </section>
+
+    <Hr />
+
+    <!-- About Section -->
+    <section id="about" class="pt-12 pb-6">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold tracking-wide mb-4">Welcome to Invert colors online</h2>
+        <div class="max-w-3xl mx-auto space-y-4">
+          <p class="text-lg text-foreground/80">
+            Your go-to collection of online tools and utilities for image processing and more.
+            Transform images, manipulate colors, and perform various tasks - all in your browser
+            with complete privacy and security.
+          </p>
+          <p class="text-foreground/80">
+            Try our featured Image Color Inverter tool above, or explore all
+            <LinkButton
+              class="underline decoration-dashed underline-offset-4 hover:text-accent"
+              href="/tools"
+            >
+              available tools
+            </LinkButton>.
+          </p>
+          {
+            // only display if at least one social link is enabled
+            SOCIALS.length > 0 && (
+              <div class="mt-6 flex flex-col sm:flex-row sm:items-center justify-center">
+                <div class="mr-2 mb-1 whitespace-nowrap sm:mb-0">Social Links:</div>
+                <Socials />
+              </div>
+            )
+          }
         </div>
       </div>
     </section>
