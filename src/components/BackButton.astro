@@ -1,5 +1,4 @@
 ---
-import IconChevronLeft from "@/assets/icons/IconChevronLeft.svg";
 import LinkButton from "./LinkButton.astro";
 import { SITE } from "@/config";
 ---
@@ -12,7 +11,10 @@ import { SITE } from "@/config";
         href="/"
         class="focus-outline mt-8 mb-2 flex hover:text-foreground/75"
       >
-        <IconChevronLeft class="inline-block size-6" />
+        <svg class="inline-block size-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M15 6l-6 6l6 6" />
+        </svg>
         <span>Go back</span>
       </LinkButton>
     </div>
