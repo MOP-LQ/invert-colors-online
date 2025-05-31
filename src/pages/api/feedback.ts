@@ -22,7 +22,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(
         JSON.stringify({
           success: false,
-          message: '建议内容至少需要10个字符'
+          message: 'Suggestion must be at least 10 characters long'
         }),
         {
           status: 400,
@@ -35,7 +35,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(
         JSON.stringify({
           success: false,
-          message: '建议内容不能超过500个字符'
+          message: 'Suggestion cannot exceed 500 characters'
         }),
         {
           status: 400,
@@ -51,7 +51,7 @@ export const POST: APIRoute = async ({ request }) => {
         return new Response(
           JSON.stringify({
             success: false,
-            message: '请输入有效的邮箱地址'
+            message: 'Please enter a valid email address'
           }),
           {
             status: 400,
@@ -91,7 +91,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(
         JSON.stringify({
           success: false,
-          message: '数据库错误，请稍后重试'
+          message: 'Database error, please try again later'
         }),
         {
           status: 500,
@@ -104,7 +104,7 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(
       JSON.stringify({
         success: true,
-        message: '反馈提交成功！感谢您的建议。'
+        message: 'Feedback submitted successfully! Thank you for your suggestion.'
       }),
       {
         status: 200,
@@ -118,7 +118,7 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(
       JSON.stringify({
         success: false,
-        message: '服务器错误，请稍后重试'
+        message: 'Server error, please try again later'
       }),
       {
         status: 500,
