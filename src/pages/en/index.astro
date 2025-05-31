@@ -4,7 +4,7 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import ImageInverter from "@/components/ImageInverter.astro";
 import FeedbackForm from "@/components/FeedbackForm.astro";
-import { SITE } from "@/config";
+
 import { t, preloadTranslations } from "@/i18n/utils";
 
 const currentLanguage = 'en';
@@ -17,7 +17,7 @@ const convertBlackWhiteTitle = await t('convert_black_white.title', currentLangu
 const convertBlackWhiteButton = await t('convert_black_white.button_text', currentLanguage, 'tools');
 ---
 
-<Layout 
+<Layout
   title={title}
   description={description}
   language={currentLanguage}
@@ -71,7 +71,7 @@ const convertBlackWhiteButton = await t('convert_black_white.button_text', curre
                 </p>
                 <time class="text-xs text-foreground/60">January 15, 2025</time>
               </div>
-              
+
               <div class="bg-background border border-border rounded-lg p-6">
                 <h3 class="text-lg font-semibold mb-2">
                   <a href="/en/posts/image-processing-tips" class="hover:text-accent transition-colors">
@@ -86,8 +86,8 @@ const convertBlackWhiteButton = await t('convert_black_white.button_text', curre
             </div>
 
             <div class="my-8 text-center">
-              <a 
-                href="/en/posts" 
+              <a
+                href="/en/posts"
                 class="inline-flex items-center gap-2 bg-accent text-background px-6 py-2 rounded-lg hover:bg-accent/90 transition-colors font-medium"
               >
                 All Posts

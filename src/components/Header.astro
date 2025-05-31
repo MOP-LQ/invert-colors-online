@@ -3,10 +3,7 @@ import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
 import { SITE } from "@/config";
-import { getCurrentLanguage, getLocalizedUrl } from "@/i18n/config";
-
 const { pathname } = Astro.url;
-const currentLanguage = getCurrentLanguage(pathname);
 
 // Remove trailing slash from current pathname if exists
 const currentPath =

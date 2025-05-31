@@ -41,13 +41,13 @@ const currentLanguage = getCurrentLanguage(pathname);
         {Object.entries(languages).map(([lang, name]) => {
           const isActive = lang === currentLanguage;
           const localizedUrl = getLocalizedUrl(pathname, lang as Language);
-          
+
           return (
             <a
               href={localizedUrl}
               class={`group flex items-center px-4 py-2 text-sm transition-colors ${
-                isActive 
-                  ? 'bg-accent text-background font-medium' 
+                isActive
+                  ? 'bg-accent text-background font-medium'
                   : 'text-foreground hover:bg-muted hover:text-accent'
               }`}
               role="menuitem"
@@ -74,15 +74,16 @@ const currentLanguage = getCurrentLanguage(pathname);
 <script>
   function initLanguageSwitcher() {
     const button = document.getElementById('language-menu-button');
-    const menu = document.querySelector('.language-menu');
-    const chevron = button?.querySelector('svg');
-    
+    const menu = document.querySelector('.language-menu') as HTMLElement | null;
+
     if (!button || !menu) return;
+
+    const chevron = button.querySelector('svg');
 
     // 切换菜单显示/隐藏
     function toggleMenu() {
       const isHidden = menu.classList.contains('hidden');
-      
+
       if (isHidden) {
         menu.classList.remove('hidden');
         button.setAttribute('aria-expanded', 'true');
@@ -144,19 +145,19 @@ const currentLanguage = getCurrentLanguage(pathname);
   .language-switcher {
     @apply relative;
   }
-  
+
   .language-flag {
     @apply text-base leading-none;
   }
-  
+
   .language-menu {
     @apply transform transition-all duration-200 ease-out;
   }
-  
+
   .language-menu.hidden {
     @apply opacity-0 scale-95 pointer-events-none;
   }
-  
+
   .language-menu:not(.hidden) {
     @apply opacity-100 scale-100;
   }
