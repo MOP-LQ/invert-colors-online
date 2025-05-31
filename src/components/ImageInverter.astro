@@ -3,10 +3,53 @@ import FileUpload from "./FileUpload.astro";
 ---
 
 <div class="image-inverter">
-  <!-- File Upload Section -->
+  <!-- Upload Options Section -->
   <div class="mb-8">
-    <h2 class="text-xl font-semibold mb-4">Upload Image</h2>
-    <FileUpload id="image-upload" onFileSelect="handleImageUpload" />
+    <h2 class="text-xl font-semibold mb-4">Upload or Paste Image</h2>
+
+    <!-- Paste Zone -->
+    <div
+      id="paste-zone"
+      class="mb-6 border-2 border-dashed border-accent/50 rounded-lg p-8 text-center transition-all duration-300 hover:border-accent hover:bg-accent/5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+      tabindex="0"
+      role="button"
+      aria-label="Paste image from clipboard"
+    >
+      <div class="space-y-4">
+        <div class="text-4xl">📋</div>
+        <div>
+          <p class="text-lg font-medium text-accent">Paste Image Here</p>
+          <p class="text-sm text-foreground/70">Press <kbd class="px-2 py-1 bg-muted rounded text-xs font-mono">Ctrl+V</kbd> or <kbd class="px-2 py-1 bg-muted rounded text-xs font-mono">Cmd+V</kbd></p>
+        </div>
+        <div class="text-xs text-foreground/60">
+          Paste screenshots, copied images, or images from other applications
+        </div>
+      </div>
+    </div>
+
+    <!-- Traditional File Upload -->
+    <div class="relative">
+      <div class="absolute inset-x-0 top-1/2 transform -translate-y-1/2">
+        <div class="flex items-center">
+          <div class="flex-grow border-t border-border"></div>
+          <span class="px-3 text-sm text-foreground/60 bg-background">or</span>
+          <div class="flex-grow border-t border-border"></div>
+        </div>
+      </div>
+      <div class="pt-8">
+        <FileUpload id="image-upload" onFileSelect="handleImageUpload" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Paste Status -->
+  <div id="paste-status" class="mb-4 text-center text-sm hidden">
+    <div id="paste-success" class="text-green-600 hidden">
+      ✅ Image pasted successfully!
+    </div>
+    <div id="paste-error" class="text-red-600 hidden">
+      ❌ <span id="paste-error-message"></span>
+    </div>
   </div>
 
   <!-- Processing Section -->
@@ -66,28 +109,76 @@ import FileUpload from "./FileUpload.astro";
   let canvas: HTMLCanvasElement | null = null;
   let ctx: CanvasRenderingContext2D | null = null;
 
-  function initImageInverter() {
-    canvas = document.getElementById('inverted-canvas') as HTMLCanvasElement;
-    ctx = canvas?.getContext('2d') || null;
-    originalImage = document.getElementById('original-image') as HTMLImageElement;
+  // Clipboard paste functionality
+  function initClipboardPaste(pasteZone: HTMLElement) {
+    // Global paste event listener
+    document.addEventListener('paste', handlePasteEvent);
 
-    const processBtn = document.getElementById('process-btn') as HTMLButtonElement;
-    const downloadBtn = document.getElementById('download-btn') as HTMLButtonElement;
-    const resetBtn = document.getElementById('reset-btn') as HTMLButtonElement;
+    // Click on paste zone to focus and enable paste
+    pasteZone.addEventListener('click', () => {
+      pasteZone.focus();
+      showPasteHint();
+    });
 
-    // Process button click
-    processBtn?.addEventListener('click', invertImage);
+    // Keyboard event for paste zone
+    pasteZone.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
+        e.preventDefault();
+        // The paste event will be handled by the global paste listener
+      }
+    });
 
-    // Download button click
-    downloadBtn?.addEventListener('click', downloadImage);
+    // Visual feedback for paste zone
+    pasteZone.addEventListener('focus', () => {
+      pasteZone.classList.add('ring-2', 'ring-accent', 'ring-offset-2');
+    });
 
-    // Reset button click
-    resetBtn?.addEventListener('click', resetTool);
+    pasteZone.addEventListener('blur', () => {
+      pasteZone.classList.remove('ring-2', 'ring-accent', 'ring-offset-2');
+      hidePasteStatus();
+    });
   }
 
-  // Global function for file upload callback
-  (window as any).handleImageUpload = function(file: File) {
-    currentFile = file;
+  function handlePasteEvent(e: ClipboardEvent) {
+    e.preventDefault();
+
+    const clipboardItems = e.clipboardData?.items;
+    if (!clipboardItems) {
+      showPasteError('Clipboard access not available');
+      return;
+    }
+
+    // Look for image items in clipboard
+    let imageFound = false;
+    for (let i = 0; i < clipboardItems.length; i++) {
+      const item = clipboardItems[i];
+
+      if (item.type.startsWith('image/')) {
+        imageFound = true;
+        const file = item.getAsFile();
+
+        if (file) {
+          // Create a more descriptive filename for pasted images
+          const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+          const extension = file.type.split('/')[1] || 'png';
+          const pastedFile = new File([file], `pasted-image-${timestamp}.${extension}`, {
+            type: file.type
+          });
+
+          currentFile = pastedFile;
+          showPasteSuccess();
+          processImageFile(pastedFile);
+        }
+        break;
+      }
+    }
+
+    if (!imageFound) {
+      showPasteError('No image found in clipboard. Please copy an image first.');
+    }
+  }
+
+  function processImageFile(file: File) {
     const reader = new FileReader();
 
     reader.onload = function(e) {
@@ -104,12 +195,106 @@ import FileUpload from "./FileUpload.astro";
 
             // Hide download button initially
             document.getElementById('download-btn')?.classList.add('hidden');
+
+            // Scroll to processing section for better UX
+            document.getElementById('processing-section')?.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
           }
         };
       }
     };
 
+    reader.onerror = function() {
+      showPasteError('Failed to read the image file');
+    };
+
     reader.readAsDataURL(file);
+  }
+
+  function showPasteSuccess() {
+    const statusDiv = document.getElementById('paste-status');
+    const successDiv = document.getElementById('paste-success');
+    const errorDiv = document.getElementById('paste-error');
+
+    if (statusDiv && successDiv && errorDiv) {
+      errorDiv.classList.add('hidden');
+      successDiv.classList.remove('hidden');
+      statusDiv.classList.remove('hidden');
+
+      // Auto-hide success message after 3 seconds
+      setTimeout(() => {
+        hidePasteStatus();
+      }, 3000);
+    }
+  }
+
+  function showPasteError(message: string) {
+    const statusDiv = document.getElementById('paste-status');
+    const successDiv = document.getElementById('paste-success');
+    const errorDiv = document.getElementById('paste-error');
+    const errorMessage = document.getElementById('paste-error-message');
+
+    if (statusDiv && successDiv && errorDiv && errorMessage) {
+      successDiv.classList.add('hidden');
+      errorMessage.textContent = message;
+      errorDiv.classList.remove('hidden');
+      statusDiv.classList.remove('hidden');
+
+      // Auto-hide error message after 5 seconds
+      setTimeout(() => {
+        hidePasteStatus();
+      }, 5000);
+    }
+  }
+
+  function showPasteHint() {
+    const pasteZone = document.getElementById('paste-zone');
+    if (pasteZone) {
+      pasteZone.classList.add('border-accent', 'bg-accent/10');
+
+      // Remove hint after 2 seconds
+      setTimeout(() => {
+        pasteZone.classList.remove('border-accent', 'bg-accent/10');
+      }, 2000);
+    }
+  }
+
+  function hidePasteStatus() {
+    const statusDiv = document.getElementById('paste-status');
+    if (statusDiv) {
+      statusDiv.classList.add('hidden');
+    }
+  }
+
+  function initImageInverter() {
+    canvas = document.getElementById('inverted-canvas') as HTMLCanvasElement;
+    ctx = canvas?.getContext('2d') || null;
+    originalImage = document.getElementById('original-image') as HTMLImageElement;
+
+    const processBtn = document.getElementById('process-btn') as HTMLButtonElement;
+    const downloadBtn = document.getElementById('download-btn') as HTMLButtonElement;
+    const resetBtn = document.getElementById('reset-btn') as HTMLButtonElement;
+    const pasteZone = document.getElementById('paste-zone') as HTMLElement;
+
+    // Process button click
+    processBtn?.addEventListener('click', invertImage);
+
+    // Download button click
+    downloadBtn?.addEventListener('click', downloadImage);
+
+    // Reset button click
+    resetBtn?.addEventListener('click', resetTool);
+
+    // Initialize clipboard paste functionality
+    initClipboardPaste(pasteZone);
+  }
+
+  // Global function for file upload callback
+  (window as any).handleImageUpload = function(file: File) {
+    currentFile = file;
+    processImageFile(file);
   };
 
   function invertImage() {
@@ -197,6 +382,9 @@ import FileUpload from "./FileUpload.astro";
     if (ctx && canvas) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
+
+    // Hide paste status
+    hidePasteStatus();
   }
 
   // Initialize on page load
