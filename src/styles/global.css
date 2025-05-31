@@ -24,15 +24,17 @@ html[data-theme="dark"] {
 
 @layer base {
   * {
-    @apply border-border outline-accent/75;
+    @apply border-border;
     scrollbar-width: auto;
     scrollbar-color: var(--color-muted) transparent;
+    outline-color: var(--accent);
+    outline-width: 2px;
   }
   html {
     @apply overflow-y-scroll scroll-smooth;
   }
   body {
-    @apply flex min-h-svh flex-col bg-background font-mono text-foreground selection:bg-accent/75 selection:text-background;
+    @apply flex min-h-svh flex-col bg-background font-mono text-foreground selection:bg-accent selection:bg-opacity-75 selection:text-background;
   }
   a,
   button {

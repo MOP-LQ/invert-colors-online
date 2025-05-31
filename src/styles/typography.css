@@ -33,7 +33,7 @@
 
   /* Blockquotes */
   .prose blockquote {
-    @apply opacity-80 break-words border-l-4 border-accent/50;
+    @apply opacity-80 break-words border-l-4 border-accent border-opacity-50;
   }
 
   /* Figure captions */
@@ -48,7 +48,7 @@
 
   /* Code */
   .prose code {
-    @apply rounded bg-muted/75 p-1 !text-foreground;
+    @apply rounded bg-muted bg-opacity-75 p-1 !text-foreground;
   }
 
   .prose code:before,
