@@ -63,37 +63,57 @@ import FileUpload from "./FileUpload.astro";
         </div>
       </div>
 
-      <!-- Inverted Image -->
+      <!-- Processed Image -->
       <div class="space-y-3">
-        <h3 class="text-lg font-medium">Inverted Image</h3>
+        <h3 class="text-lg font-medium">Processed Image</h3>
         <div class="border border-border rounded-lg overflow-hidden bg-muted/20">
           <canvas id="inverted-canvas" class="w-full h-auto max-h-96"></canvas>
         </div>
       </div>
     </div>
 
-    <!-- Controls -->
-    <div class="mt-6 flex flex-wrap gap-4 justify-center">
-      <button
-        id="process-btn"
-        class="px-6 py-2 bg-accent text-background rounded-lg hover:bg-accent/90 transition-colors font-medium"
-      >
-        Invert Colors
-      </button>
+    <!-- Image Processing Controls -->
+    <div class="mt-6 space-y-4">
+      <!-- Main Processing Buttons -->
+      <div class="flex flex-wrap gap-3 justify-center">
+        <button
+          id="invert-btn"
+          class="px-4 py-2 bg-accent text-background rounded-lg hover:bg-accent/90 transition-colors font-medium text-sm"
+        >
+          Invert Colors
+        </button>
 
-      <button
-        id="download-btn"
-        class="px-6 py-2 border border-accent text-accent rounded-lg hover:bg-accent hover:text-background transition-colors font-medium hidden"
-      >
-        Download Result
-      </button>
+        <button
+          id="flip-horizontal-btn"
+          class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
+        >
+          Flip Horizontal
+        </button>
 
-      <button
-        id="reset-btn"
-        class="px-6 py-2 border border-border text-foreground rounded-lg hover:bg-muted/20 transition-colors font-medium"
-      >
-        Upload New Image
-      </button>
+        <button
+          id="flip-vertical-btn"
+          class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium text-sm"
+        >
+          Flip Vertical
+        </button>
+
+        <button
+          id="download-btn"
+          class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium text-sm"
+        >
+          Download Image
+        </button>
+      </div>
+
+      <!-- Reset Button -->
+      <div class="flex justify-center">
+        <button
+          id="reset-btn"
+          class="px-6 py-2 border border-border text-foreground rounded-lg hover:bg-muted/20 transition-colors font-medium"
+        >
+          Upload New Image
+        </button>
+      </div>
     </div>
 
     <!-- Processing Status -->
@@ -185,16 +205,16 @@ import FileUpload from "./FileUpload.astro";
       if (originalImage && e.target?.result) {
         originalImage.src = e.target.result as string;
         originalImage.onload = function() {
-          if (canvas && originalImage) {
+          if (canvas && ctx && originalImage) {
             // Set canvas size to match image
             canvas.width = originalImage.naturalWidth;
             canvas.height = originalImage.naturalHeight;
 
+            // Draw the original image to canvas immediately
+            ctx.drawImage(originalImage, 0, 0);
+
             // Show processing section
             document.getElementById('processing-section')?.classList.remove('hidden');
-
-            // Hide download button initially
-            document.getElementById('download-btn')?.classList.add('hidden');
 
             // Scroll to processing section for better UX
             document.getElementById('processing-section')?.scrollIntoView({
@@ -273,18 +293,18 @@ import FileUpload from "./FileUpload.astro";
     ctx = canvas?.getContext('2d') || null;
     originalImage = document.getElementById('original-image') as HTMLImageElement;
 
-    const processBtn = document.getElementById('process-btn') as HTMLButtonElement;
+    const invertBtn = document.getElementById('invert-btn') as HTMLButtonElement;
+    const flipHorizontalBtn = document.getElementById('flip-horizontal-btn') as HTMLButtonElement;
+    const flipVerticalBtn = document.getElementById('flip-vertical-btn') as HTMLButtonElement;
     const downloadBtn = document.getElementById('download-btn') as HTMLButtonElement;
     const resetBtn = document.getElementById('reset-btn') as HTMLButtonElement;
     const pasteZone = document.getElementById('paste-zone') as HTMLElement;
 
-    // Process button click
-    processBtn?.addEventListener('click', invertImage);
-
-    // Download button click
+    // Button event listeners
+    invertBtn?.addEventListener('click', () => applyTransformation('invert'));
+    flipHorizontalBtn?.addEventListener('click', () => applyTransformation('flipHorizontal'));
+    flipVerticalBtn?.addEventListener('click', () => applyTransformation('flipVertical'));
     downloadBtn?.addEventListener('click', downloadImage);
-
-    // Reset button click
     resetBtn?.addEventListener('click', resetTool);
 
     // Initialize clipboard paste functionality
@@ -297,58 +317,102 @@ import FileUpload from "./FileUpload.astro";
     processImageFile(file);
   };
 
-  function invertImage() {
-    if (!originalImage?.src) return;
+  // Unified transformation function
+  function applyTransformation(type: 'invert' | 'flipHorizontal' | 'flipVertical') {
+    if (!originalImage?.src || !canvas || !ctx) return;
 
-    const processBtn = document.getElementById('process-btn') as HTMLButtonElement;
-    const downloadBtn = document.getElementById('download-btn') as HTMLButtonElement;
     const processingStatus = document.getElementById('processing-status');
+    const buttons = document.querySelectorAll('#invert-btn, #flip-horizontal-btn, #flip-vertical-btn');
 
     // Show processing status
     processingStatus?.classList.remove('hidden');
-    if (processBtn) {
-      processBtn.disabled = true;
-      processBtn.textContent = 'Processing...';
-    }
+
+    // Disable all transformation buttons during processing
+    buttons.forEach(btn => {
+      if (btn instanceof HTMLButtonElement) {
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+      }
+    });
 
     // Use setTimeout to allow UI to update
     setTimeout(() => {
       try {
-        if (ctx && canvas && originalImage) {
-          // Draw original image to canvas
-          ctx.drawImage(originalImage, 0, 0);
-
-          // Get image data
-          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          const data = imageData.data;
-
-          // Invert colors
-          for (let i = 0; i < data.length; i += 4) {
-            data[i] = 255 - data[i];     // Red
-            data[i + 1] = 255 - data[i + 1]; // Green
-            data[i + 2] = 255 - data[i + 2]; // Blue
-            // Alpha channel (data[i + 3]) remains unchanged
-          }
-
-          // Put inverted image data back to canvas
-          ctx.putImageData(imageData, 0, 0);
-
-          // Show download button
-          downloadBtn?.classList.remove('hidden');
+        if (type === 'invert') {
+          applyColorInversion();
+        } else if (type === 'flipHorizontal') {
+          applyHorizontalFlip();
+        } else if (type === 'flipVertical') {
+          applyVerticalFlip();
         }
 
       } catch (error) {
-        console.error('Error processing image:', error);
-        alert('Error processing image. Please try again.');
+        console.error(`Error applying ${type} transformation:`, error);
+        alert(`Error applying ${type} transformation. Please try again.`);
       } finally {
         // Hide processing status
         processingStatus?.classList.add('hidden');
-        if (processBtn) {
-          processBtn.disabled = false;
-          processBtn.textContent = 'Invert Colors';
-        }
+
+        // Re-enable all transformation buttons
+        buttons.forEach(btn => {
+          if (btn instanceof HTMLButtonElement) {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+          }
+        });
       }
     }, 100);
+  }
+
+  function applyColorInversion() {
+    if (!ctx || !canvas) return;
+
+    // Get current canvas content
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    // Invert colors
+    for (let i = 0; i < data.length; i += 4) {
+      data[i] = 255 - data[i];     // Red
+      data[i + 1] = 255 - data[i + 1]; // Green
+      data[i + 2] = 255 - data[i + 2]; // Blue
+      // Alpha channel (data[i + 3]) remains unchanged
+    }
+
+    // Put inverted image data back to canvas
+    ctx.putImageData(imageData, 0, 0);
+  }
+
+  function applyHorizontalFlip() {
+    if (!ctx || !canvas) return;
+
+    // Get current canvas content
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Apply horizontal flip transformation
+    ctx.save();
+    ctx.scale(-1, 1);
+    ctx.putImageData(imageData, -canvas.width, 0);
+    ctx.restore();
+  }
+
+  function applyVerticalFlip() {
+    if (!ctx || !canvas) return;
+
+    // Get current canvas content
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Apply vertical flip transformation
+    ctx.save();
+    ctx.scale(1, -1);
+    ctx.putImageData(imageData, 0, -canvas.height);
+    ctx.restore();
   }
 
   function downloadImage() {
@@ -383,8 +447,22 @@ import FileUpload from "./FileUpload.astro";
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
+    // Clear original image
+    if (originalImage) {
+      originalImage.src = '';
+    }
+
     // Hide paste status
     hidePasteStatus();
+
+    // Re-enable all buttons and reset their state
+    const buttons = document.querySelectorAll('#invert-btn, #flip-horizontal-btn, #flip-vertical-btn');
+    buttons.forEach(btn => {
+      if (btn instanceof HTMLButtonElement) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      }
+    });
   }
 
   // Initialize on page load
