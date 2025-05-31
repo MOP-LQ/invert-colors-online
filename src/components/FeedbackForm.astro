@@ -4,9 +4,9 @@
 
 <div class="feedback-form-container">
   <div class="bg-background border border-border rounded-lg p-6 shadow-sm">
-    <h3 class="text-xl font-bold text-accent mb-2">建议新工具</h3>
+    <h3 class="text-xl font-bold text-accent mb-2">Suggest New Tools</h3>
     <p class="text-sm text-foreground/70 mb-4">
-      您需要什么新工具？建议我们，我们会尝试在网站中实现该工具。
+      What new tools do you need? Suggest to us, and we'll try to implement them on the website.
     </p>
 
     <!-- Feedback Form -->
@@ -14,20 +14,20 @@
       <!-- Suggestion Text Area -->
       <div>
         <label for="suggestion" class="block text-sm font-medium text-foreground mb-2">
-          您的建议 <span class="text-red-500">*</span>
+          Your Suggestion <span class="text-red-500">*</span>
         </label>
         <textarea
           id="suggestion"
           name="suggestion"
           rows="4"
-          placeholder="请输入您的建议..."
+          placeholder="Enter your suggestion..."
           class="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent resize-none text-sm"
           required
           minlength="10"
           maxlength="500"
         ></textarea>
         <div class="flex justify-between text-xs text-foreground/60 mt-1">
-          <span>最少10个字符</span>
+          <span>Minimum 10 characters</span>
           <span id="char-count">0/500</span>
         </div>
       </div>
@@ -35,7 +35,7 @@
       <!-- Email Field (Optional) -->
       <div>
         <label for="email" class="block text-sm font-medium text-foreground mb-2">
-          邮箱地址 <span class="text-foreground/60">(可选)</span>
+          Email Address <span class="text-foreground/60">(optional)</span>
         </label>
         <input
           type="email"
@@ -45,7 +45,7 @@
           class="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent text-sm"
         />
         <p class="text-xs text-foreground/60 mt-1">
-          仅在您希望我们回复时填写
+          Only fill in if you want us to reply
         </p>
       </div>
 
@@ -60,18 +60,18 @@
             class="mt-0.5 h-4 w-4 text-accent focus:ring-accent border-border rounded"
           />
           <span class="text-foreground/80">
-            我同意 <button type="button" id="privacy-toggle" class="text-accent hover:underline">隐私政策</button> <span class="text-red-500">*</span>
+            I agree to the <button type="button" id="privacy-toggle" class="text-accent hover:underline">Privacy Policy</button> <span class="text-red-500">*</span>
           </span>
         </label>
-        
+
         <!-- Privacy Policy (Expandable) -->
         <div id="privacy-policy" class="hidden bg-muted/20 p-3 rounded text-xs text-foreground/70">
-          <h4 class="font-medium mb-2">隐私承诺：</h4>
+          <h4 class="font-medium mb-2">Privacy Commitment:</h4>
           <ul class="space-y-1 list-disc list-inside">
-            <li>我们承诺保护您的信息机密性</li>
-            <li>绝不会分享或泄露您的数据</li>
-            <li>邮箱地址仅用于回复您的建议（如果您提供）</li>
-            <li>您可以随时要求删除您的数据</li>
+            <li>We promise to protect the confidentiality of your information</li>
+            <li>We will never share or leak your data</li>
+            <li>Email addresses are only used to reply to your suggestions (if provided)</li>
+            <li>You can request deletion of your data at any time</li>
           </ul>
         </div>
       </div>
@@ -82,17 +82,17 @@
         id="submit-btn"
         class="w-full bg-accent text-background py-2 px-4 rounded-lg hover:bg-accent/90 transition-colors font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        发送反馈
+        Send Feedback
       </button>
     </form>
 
     <!-- Status Messages -->
     <div id="form-status" class="mt-4 hidden">
       <div id="success-message" class="hidden bg-green-50 border border-green-200 text-green-800 px-3 py-2 rounded text-sm">
-        ✅ 感谢您的反馈！我们已收到您的建议。
+        ✅ Thank you for your feedback! We have received your suggestion.
       </div>
       <div id="error-message" class="hidden bg-red-50 border border-red-200 text-red-800 px-3 py-2 rounded text-sm">
-        ❌ <span id="error-text">提交失败，请稍后重试。</span>
+        ❌ <span id="error-text">Submission failed, please try again later.</span>
       </div>
     </div>
   </div>
@@ -115,7 +115,7 @@
     suggestionTextarea?.addEventListener('input', () => {
       const length = suggestionTextarea.value.length;
       charCount.textContent = `${length}/500`;
-      
+
       if (length < 10) {
         charCount.classList.add('text-red-500');
         charCount.classList.remove('text-foreground/60');
@@ -134,7 +134,7 @@
     // Form submission
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       const formData = new FormData(form);
       const suggestion = formData.get('suggestion') as string;
       const email = formData.get('email') as string;
@@ -142,18 +142,18 @@
 
       // Validation
       if (!suggestion || suggestion.length < 10) {
-        showError('建议内容至少需要10个字符');
+        showError('Suggestion must be at least 10 characters long');
         return;
       }
 
       if (!privacyAgreement) {
-        showError('请同意隐私政策');
+        showError('Please agree to the privacy policy');
         return;
       }
 
       // Show loading state
       submitBtn.disabled = true;
-      submitBtn.textContent = '提交中...';
+      submitBtn.textContent = 'Submitting...';
       hideMessages();
 
       try {
@@ -178,14 +178,14 @@
           charCount.textContent = '0/500';
         } else {
           const errorData = await response.json();
-          showError(errorData.message || '提交失败，请稍后重试');
+          showError(errorData.message || 'Submission failed, please try again later');
         }
       } catch (error) {
         console.error('Feedback submission error:', error);
-        showError('网络错误，请检查连接后重试');
+        showError('Network error, please check your connection and try again');
       } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = '发送反馈';
+        submitBtn.textContent = 'Send Feedback';
       }
     });
 
