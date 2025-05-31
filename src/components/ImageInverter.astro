@@ -386,32 +386,50 @@ import FileUpload from "./FileUpload.astro";
   function applyHorizontalFlip() {
     if (!ctx || !canvas) return;
 
-    // Get current canvas content
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    // Create a temporary canvas to hold the current image
+    const tempCanvas = document.createElement('canvas');
+    const tempCtx = tempCanvas.getContext('2d');
+    if (!tempCtx) return;
 
-    // Clear canvas
+    // Set temp canvas size to match main canvas
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+
+    // Copy current canvas content to temp canvas
+    tempCtx.drawImage(canvas, 0, 0);
+
+    // Clear main canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Apply horizontal flip transformation
     ctx.save();
     ctx.scale(-1, 1);
-    ctx.putImageData(imageData, -canvas.width, 0);
+    ctx.drawImage(tempCanvas, -canvas.width, 0);
     ctx.restore();
   }
 
   function applyVerticalFlip() {
     if (!ctx || !canvas) return;
 
-    // Get current canvas content
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    // Create a temporary canvas to hold the current image
+    const tempCanvas = document.createElement('canvas');
+    const tempCtx = tempCanvas.getContext('2d');
+    if (!tempCtx) return;
 
-    // Clear canvas
+    // Set temp canvas size to match main canvas
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+
+    // Copy current canvas content to temp canvas
+    tempCtx.drawImage(canvas, 0, 0);
+
+    // Clear main canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Apply vertical flip transformation
     ctx.save();
     ctx.scale(1, -1);
-    ctx.putImageData(imageData, 0, -canvas.height);
+    ctx.drawImage(tempCanvas, 0, -canvas.height);
     ctx.restore();
   }
 
