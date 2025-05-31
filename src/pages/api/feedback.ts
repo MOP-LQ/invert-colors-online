@@ -13,9 +13,11 @@ interface FeedbackData {
 }
 
 export const POST: APIRoute = async ({ request }) => {
+  console.log('Feedback API: Received POST request');
   try {
     // Parse request body
     const body: FeedbackData = await request.json();
+    console.log('Feedback API: Parsed request body:', body);
 
     // Validate required fields
     if (!body.suggestion || body.suggestion.trim().length < 10) {
@@ -73,6 +75,7 @@ export const POST: APIRoute = async ({ request }) => {
     };
 
     // Submit to Supabase
+    console.log('Feedback API: Submitting to Supabase:', feedbackData);
     const response = await fetch(`${SUPABASE_URL}/rest/v1/feedback`, {
       method: 'POST',
       headers: {
@@ -83,6 +86,7 @@ export const POST: APIRoute = async ({ request }) => {
       },
       body: JSON.stringify(feedbackData)
     });
+    console.log('Feedback API: Supabase response status:', response.status);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -95,12 +99,16 @@ export const POST: APIRoute = async ({ request }) => {
         }),
         {
           status: 500,
-          headers: { 'Content-Type': 'application/json' }
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
         }
       );
     }
 
     // Success response
+    console.log('Feedback API: Returning success response');
     return new Response(
       JSON.stringify({
         success: true,
@@ -108,7 +116,12 @@ export const POST: APIRoute = async ({ request }) => {
       }),
       {
         status: 200,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type'
+        }
       }
     );
 

@@ -158,6 +158,14 @@
 
       try {
         // Submit to Supabase
+        console.log('Submitting feedback...', {
+          suggestion: suggestion.trim(),
+          email: email.trim() || null,
+          timestamp: new Date().toISOString(),
+          user_agent: navigator.userAgent,
+          page_url: window.location.href
+        });
+
         const response = await fetch('/api/feedback', {
           method: 'POST',
           headers: {
@@ -172,17 +180,29 @@
           })
         });
 
+        console.log('Response status:', response.status);
+        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
         if (response.ok) {
+          const successData = await response.json();
+          console.log('Success response:', successData);
           showSuccess();
           form.reset();
           charCount.textContent = '0/500';
         } else {
-          const errorData = await response.json();
+          const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
+          console.error('Error response:', errorData);
           showError(errorData.message || 'Submission failed, please try again later');
         }
       } catch (error) {
-        console.error('Feedback submission error:', error);
-        showError('Network error, please check your connection and try again');
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.error('Feedback submission error details:', {
+          message: errorMessage,
+          stack: error instanceof Error ? error.stack : undefined,
+          name: error instanceof Error ? error.name : 'Unknown',
+          error: error
+        });
+        showError(`Network error: ${errorMessage}. Please check your connection and try again.`);
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Send Feedback';

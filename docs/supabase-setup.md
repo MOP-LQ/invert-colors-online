@@ -29,9 +29,9 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
-CREATE TRIGGER update_feedback_updated_at 
-    BEFORE UPDATE ON feedback 
-    FOR EACH ROW 
+CREATE TRIGGER update_feedback_updated_at
+    BEFORE UPDATE ON feedback
+    FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 
 -- 创建索引以提高查询性能
@@ -42,22 +42,25 @@ CREATE INDEX idx_feedback_email ON feedback(email) WHERE email IS NOT NULL;
 -- 添加行级安全策略 (RLS)
 ALTER TABLE feedback ENABLE ROW LEVEL SECURITY;
 
--- 允许匿名用户插入反馈
+-- 允许匿名用户插入反馈 (CRITICAL: This policy is required for the feedback form to work)
 CREATE POLICY "Allow anonymous insert" ON feedback
-  FOR INSERT 
-  TO anon 
+  FOR INSERT
+  TO anon
   WITH CHECK (true);
+
+-- Alternative policy if the above doesn't work:
+-- CREATE POLICY "Allow all insert" ON feedback FOR INSERT WITH CHECK (true);
 
 -- 只允许认证用户查看反馈（管理员功能）
 CREATE POLICY "Allow authenticated read" ON feedback
-  FOR SELECT 
-  TO authenticated 
+  FOR SELECT
+  TO authenticated
   USING (true);
 
 -- 只允许认证用户更新反馈状态（管理员功能）
 CREATE POLICY "Allow authenticated update" ON feedback
-  FOR UPDATE 
-  TO authenticated 
+  FOR UPDATE
+  TO authenticated
   USING (true);
 ```
 
@@ -112,29 +115,29 @@ const SUPABASE_ANON_KEY = 'your-anon-key-here';
 ### 查看所有反馈
 
 ```sql
-SELECT 
+SELECT
   id,
   suggestion,
   email,
   status,
   created_at
-FROM feedback 
+FROM feedback
 ORDER BY created_at DESC;
 ```
 
 ### 按状态筛选
 
 ```sql
-SELECT * FROM feedback 
-WHERE status = 'new' 
+SELECT * FROM feedback
+WHERE status = 'new'
 ORDER BY created_at DESC;
 ```
 
 ### 更新反馈状态
 
 ```sql
-UPDATE feedback 
-SET status = 'reviewed' 
+UPDATE feedback
+SET status = 'reviewed'
 WHERE id = 1;
 ```
 
