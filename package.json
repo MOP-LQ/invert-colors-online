@@ -7,8 +7,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && pagefind --site dist && cp -r dist/pagefind public/",
-    "build:check": "astro check && astro build && pagefind --site dist && cp -r dist/pagefind public/",
+    "build": "astro build && pagefind --site dist && node -e \"require('fs').cpSync('dist/pagefind', 'public/pagefind', {recursive: true})\"",
+    "build:check": "astro check && astro build && pagefind --site dist && node -e \"require('fs').cpSync('dist/pagefind', 'public/pagefind', {recursive: true})\"",
     "preview": "astro preview",
     "sync": "astro sync",
     "astro": "astro",
@@ -19,7 +19,7 @@
   "dependencies": {
     "@astrojs/rss": "^4.0.11",
     "@astrojs/sitemap": "^3.2.1",
-    "@astrojs/tailwind": "^5.1.0",
+    "@astrojs/tailwind": "^5.1.5",
     "@resvg/resvg-js": "^2.6.2",
     "astro": "^5.5.2",
     "astro-i18next": "^1.0.0-beta.21",

@@ -1,11 +1,95 @@
-@plugin '@tailwindcss/typography';
-
 @layer base {
   .prose {
-    @apply prose-headings:!mb-3 prose-headings:!text-foreground prose-h3:italic prose-p:!text-foreground prose-a:!text-foreground prose-a:!decoration-dashed prose-a:underline-offset-8 hover:prose-a:text-accent prose-blockquote:!border-l-accent/50 prose-blockquote:opacity-80 prose-figcaption:!text-foreground prose-figcaption:opacity-70 prose-strong:!text-foreground prose-code:rounded prose-code:bg-muted/75 prose-code:p-1 prose-code:!text-foreground prose-code:before:!content-none prose-code:after:!content-none prose-ol:!text-foreground prose-ul:overflow-x-clip prose-ul:!text-foreground prose-li:marker:!text-accent prose-table:text-foreground prose-th:border prose-th:border-border prose-td:border prose-td:border-border prose-img:mx-auto prose-img:!my-2 prose-img:border-2 prose-img:border-border prose-hr:!border-border;
+    /* Typography base styles - compatible with Tailwind v3 */
   }
+
+  /* Headings */
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
+    @apply !mb-3 !text-foreground;
+  }
+
+  .prose h3 {
+    @apply italic;
+  }
+
+  /* Paragraphs */
+  .prose p {
+    @apply !text-foreground;
+  }
+
+  /* Links */
   .prose a {
-    @apply break-words hover:!text-accent;
+    @apply !text-foreground !decoration-dashed underline-offset-8 break-words;
+  }
+
+  .prose a:hover {
+    @apply !text-accent;
+  }
+
+  /* Blockquotes */
+  .prose blockquote {
+    @apply opacity-80 break-words border-l-4 border-accent/50;
+  }
+
+  /* Figure captions */
+  .prose figcaption {
+    @apply !text-foreground opacity-70;
+  }
+
+  /* Strong text */
+  .prose strong {
+    @apply !text-foreground;
+  }
+
+  /* Code */
+  .prose code {
+    @apply rounded bg-muted/75 p-1 !text-foreground;
+  }
+
+  .prose code:before,
+  .prose code:after {
+    content: none !important;
+  }
+
+  /* Lists */
+  .prose ol {
+    @apply !text-foreground;
+  }
+
+  .prose ul {
+    @apply overflow-x-clip !text-foreground;
+  }
+
+  .prose li::marker {
+    @apply !text-accent;
+  }
+
+  /* Tables */
+  .prose table {
+    @apply text-foreground;
+  }
+
+  .prose th {
+    @apply border border-border;
+  }
+
+  .prose td {
+    @apply border border-border;
+  }
+
+  /* Images */
+  .prose img {
+    @apply mx-auto !my-2 border-2 border-border;
+  }
+
+  /* Horizontal rules */
+  .prose hr {
+    @apply !border-border;
   }
   .prose thead th:first-child,
   tbody td:first-child,
@@ -30,8 +114,7 @@
     @apply border border-border;
   }
 
-  .prose code,
-  .prose blockquote {
+  .prose code {
     @apply break-words;
   }
 
