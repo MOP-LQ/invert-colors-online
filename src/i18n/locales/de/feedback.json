@@ -1,0 +1,35 @@
+{
+  "title": "Neue Werkzeuge vorschlagen",
+  "description": "Welche neuen Werkzeuge benötigen Sie? Schlagen Sie uns vor, und wir werden versuchen, sie auf der Website zu implementieren.",
+  "form": {
+    "suggestion_label": "Ihr Vorschlag",
+    "suggestion_placeholder": "Geben Sie Ihren Vorschlag ein...",
+    "suggestion_min_chars": "Mindestens 10 Zeichen",
+    "email_label": "E-Mail-Adresse",
+    "email_optional": "(optional)",
+    "email_placeholder": "ihre.email@beispiel.com",
+    "email_help": "Nur ausfüllen, wenn Sie eine Antwort wünschen",
+    "privacy_agreement": "Ich stimme der",
+    "privacy_policy": "Datenschutzrichtlinie",
+    "submit_button": "Feedback senden",
+    "submitting": "Wird gesendet..."
+  },
+  "privacy": {
+    "title": "Datenschutz-Verpflichtung:",
+    "points": [
+      "Wir verpflichten uns, die Vertraulichkeit Ihrer Informationen zu schützen",
+      "Wir werden Ihre Daten niemals weitergeben oder preisgeben",
+      "E-Mail-Adressen werden nur verwendet, um auf Ihre Vorschläge zu antworten (falls angegeben)",
+      "Sie können jederzeit die Löschung Ihrer Daten anfordern"
+    ]
+  },
+  "messages": {
+    "success": "Vielen Dank für Ihr Feedback! Wir haben Ihren Vorschlag erhalten.",
+    "error_default": "Übermittlung fehlgeschlagen, bitte versuchen Sie es später erneut.",
+    "error_min_length": "Der Vorschlag muss mindestens 10 Zeichen lang sein",
+    "error_max_length": "Der Vorschlag darf 500 Zeichen nicht überschreiten",
+    "error_email_invalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+    "error_privacy_required": "Bitte stimmen Sie der Datenschutzrichtlinie zu",
+    "error_network": "Netzwerkfehler: {message}. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut."
+  }
+}

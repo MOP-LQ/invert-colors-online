@@ -1,6 +1,8 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import { SITE } from "@/config";
+import { getCurrentLanguage, getLocalizedUrl, supportedLanguages, type Language } from "@/i18n/config";
+import { preloadTranslations } from "@/i18n/utils";
 import "@/styles/global.css";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
@@ -15,7 +17,14 @@ export interface Props {
   pubDatetime?: Date;
   modDatetime?: Date | null;
   scrollSmooth?: boolean;
+  language?: Language;
 }
+
+// 获取当前语言
+const currentLanguage = Astro.props.language || getCurrentLanguage(Astro.url.pathname);
+
+// 预加载翻译
+await preloadTranslations(currentLanguage);
 
 const {
   title = SITE.title,
@@ -30,6 +39,12 @@ const {
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage, Astro.url);
+
+// 生成hreflang URLs
+const hreflangUrls = supportedLanguages.map(lang => ({
+  lang,
+  url: new URL(getLocalizedUrl(Astro.url.pathname, lang), Astro.url)
+}));
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -49,13 +64,19 @@ const structuredData = {
 ---
 
 <!doctype html>
-<html lang=`${SITE.lang ?? "en"}` class={`${scrollSmooth && "scroll-smooth"}`}>
+<html lang={currentLanguage} class={`${scrollSmooth && "scroll-smooth"}`}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Hreflang tags for SEO -->
+    {hreflangUrls.map(({ lang, url }) => (
+      <link rel="alternate" hreflang={lang} href={url.toString()} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={hreflangUrls.find(h => h.lang === 'en')?.url.toString() || canonicalURL} />
 
     <!-- General Meta Tags -->
     <title>{title}</title>

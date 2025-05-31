@@ -1,0 +1,32 @@
+{
+  "menu": {
+    "home": "Home",
+    "tools": "Tools",
+    "posts": "Posts",
+    "about": "About",
+    "search": "Search",
+    "tags": "Tags",
+    "archives": "Archives"
+  },
+  "tools": {
+    "image_inverter": "Image Inverter",
+    "color_tools": "Color Tools",
+    "image_tools": "Image Tools"
+  },
+  "breadcrumb": {
+    "home": "Home",
+    "you_are_here": "You are here:"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {current} of {total}",
+    "go_to_page": "Go to page {page}"
+  },
+  "search": {
+    "placeholder": "Search posts...",
+    "no_results": "No posts found",
+    "results_found": "{count} posts found",
+    "clear": "Clear search"
+  }
+}

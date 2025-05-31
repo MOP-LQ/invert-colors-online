@@ -1,9 +1,12 @@
 ---
 import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
 import { SITE } from "@/config";
+import { getCurrentLanguage, getLocalizedUrl } from "@/i18n/config";
 
 const { pathname } = Astro.url;
+const currentLanguage = getCurrentLanguage(pathname);
 
 // Remove trailing slash from current pathname if exists
 const currentPath =
@@ -168,6 +171,10 @@ const isActive = (path: string) => {
               </li>
             )
           }
+          <!-- Language Switcher -->
+          <li class="col-span-2 sm:col-span-1 flex items-center justify-center">
+            <LanguageSwitcher pathname={pathname} class="w-full sm:w-auto" />
+          </li>
         </ul>
       </nav>
     </div>

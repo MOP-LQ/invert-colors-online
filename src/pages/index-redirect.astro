@@ -1,0 +1,58 @@
+---
+// 语言重定向页面
+import { isLanguageSupported } from "@/i18n/utils";
+import { defaultLanguage } from "@/i18n/config";
+
+// 检测用户首选语言
+let preferredLanguage = defaultLanguage;
+
+// 在服务器端，我们无法访问localStorage，所以使用Accept-Language头
+const acceptLanguage = Astro.request.headers.get('accept-language');
+if (acceptLanguage) {
+  const browserLang = acceptLanguage.split(',')[0].split('-')[0];
+  if (isLanguageSupported(browserLang)) {
+    preferredLanguage = browserLang;
+  }
+}
+
+// 重定向到首选语言
+return Astro.redirect(`/${preferredLanguage}/`);
+---
+
+<!-- 如果JavaScript可用，也提供客户端重定向 -->
+<script>
+  // 检查localStorage中的语言偏好
+  const savedLanguage = localStorage.getItem('preferred-language');
+  const supportedLanguages = ['en', 'de'];
+  
+  let targetLanguage = 'en'; // 默认语言
+  
+  if (savedLanguage && supportedLanguages.includes(savedLanguage)) {
+    targetLanguage = savedLanguage;
+  } else {
+    // 检查浏览器语言
+    const browserLang = navigator.language.split('-')[0];
+    if (supportedLanguages.includes(browserLang)) {
+      targetLanguage = browserLang;
+    }
+  }
+  
+  // 重定向到目标语言
+  window.location.href = `/${targetLanguage}/`;
+</script>
+
+<!-- 备用内容，如果重定向失败 -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting...</title>
+  <meta http-equiv="refresh" content="0; url=/en/">
+</head>
+<body>
+  <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+    <h1>Redirecting...</h1>
+    <p>If you are not redirected automatically, <a href="/en/">click here for English</a> or <a href="/de/">hier für Deutsch</a>.</p>
+  </div>
+</body>
+</html>

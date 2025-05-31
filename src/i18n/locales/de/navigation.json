@@ -1,0 +1,32 @@
+{
+  "menu": {
+    "home": "Startseite",
+    "tools": "Werkzeuge",
+    "posts": "Beiträge",
+    "about": "Über uns",
+    "search": "Suchen",
+    "tags": "Tags",
+    "archives": "Archiv"
+  },
+  "tools": {
+    "image_inverter": "Bild-Inverter",
+    "color_tools": "Farb-Werkzeuge",
+    "image_tools": "Bild-Werkzeuge"
+  },
+  "breadcrumb": {
+    "home": "Startseite",
+    "you_are_here": "Sie sind hier:"
+  },
+  "pagination": {
+    "previous": "Vorherige",
+    "next": "Nächste",
+    "page": "Seite {current} von {total}",
+    "go_to_page": "Gehe zu Seite {page}"
+  },
+  "search": {
+    "placeholder": "Beiträge suchen...",
+    "no_results": "Keine Beiträge gefunden",
+    "results_found": "{count} Beiträge gefunden",
+    "clear": "Suche löschen"
+  }
+}

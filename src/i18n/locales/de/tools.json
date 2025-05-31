@@ -1,0 +1,53 @@
+{
+  "image_inverter": {
+    "title": "Bildfarben-Inverter",
+    "description": "Invertieren Sie die Farben Ihrer Bilder sofort. Transformieren Sie Fotos mit Negativeffekten für künstlerische Zwecke oder Barrierefreiheit.",
+    "instructions": {
+      "title": "So verwenden Sie es:",
+      "steps": [
+        "Laden Sie ein Bild hoch oder fügen Sie es aus der Zwischenablage ein (Strg+V)",
+        "Das Bild wird automatisch invertiert",
+        "Verwenden Sie zusätzliche Werkzeuge zum Spiegeln oder Drehen bei Bedarf",
+        "Laden Sie das verarbeitete Bild herunter"
+      ]
+    },
+    "upload": {
+      "title": "Bild hochladen",
+      "drag_drop": "Ziehen Sie ein Bild hierher",
+      "or": "oder",
+      "click_to_upload": "Klicken zum Hochladen",
+      "paste_clipboard": "Oder aus Zwischenablage einfügen (Strg+V)",
+      "supported_formats": "Unterstützte Formate: JPG, PNG, GIF, WebP",
+      "max_size": "Maximale Dateigröße: 10MB"
+    },
+    "preview": {
+      "original": "Original",
+      "inverted": "Invertiert",
+      "processing": "Bild wird verarbeitet...",
+      "error": "Fehler beim Verarbeiten des Bildes"
+    },
+    "actions": {
+      "invert": "Farben invertieren",
+      "flip_horizontal": "Horizontal spiegeln",
+      "flip_vertical": "Vertikal spiegeln",
+      "rotate_left": "Nach links drehen",
+      "rotate_right": "Nach rechts drehen",
+      "reset": "Zurücksetzen",
+      "download": "Bild herunterladen"
+    },
+    "messages": {
+      "upload_success": "Bild erfolgreich hochgeladen",
+      "processing_complete": "Bildverarbeitung abgeschlossen",
+      "download_ready": "Bild zum Download bereit",
+      "error_upload": "Fehler beim Hochladen des Bildes",
+      "error_processing": "Fehler beim Verarbeiten des Bildes",
+      "error_format": "Nicht unterstütztes Bildformat",
+      "error_size": "Bilddatei ist zu groß"
+    }
+  },
+  "convert_black_white": {
+    "title": "Schwarzes Bild zu Weiß konvertieren",
+    "description": "Transformieren Sie schwarze Bilder sofort zu weißen Hintergründen. Perfekt für Dokumentenverarbeitung und Designarbeit.",
+    "button_text": "Schwarz zu Weiß konvertieren"
+  }
+}

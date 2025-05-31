@@ -1,0 +1,35 @@
+{
+  "title": "Suggest New Tools",
+  "description": "What new tools do you need? Suggest to us, and we'll try to implement them on the website.",
+  "form": {
+    "suggestion_label": "Your Suggestion",
+    "suggestion_placeholder": "Enter your suggestion...",
+    "suggestion_min_chars": "Minimum 10 characters",
+    "email_label": "Email Address",
+    "email_optional": "(optional)",
+    "email_placeholder": "your.email@example.com",
+    "email_help": "Only fill in if you want us to reply",
+    "privacy_agreement": "I agree to the",
+    "privacy_policy": "Privacy Policy",
+    "submit_button": "Send Feedback",
+    "submitting": "Submitting..."
+  },
+  "privacy": {
+    "title": "Privacy Commitment:",
+    "points": [
+      "We promise to protect the confidentiality of your information",
+      "We will never share or leak your data",
+      "Email addresses are only used to reply to your suggestions (if provided)",
+      "You can request deletion of your data at any time"
+    ]
+  },
+  "messages": {
+    "success": "Thank you for your feedback! We have received your suggestion.",
+    "error_default": "Submission failed, please try again later.",
+    "error_min_length": "Suggestion must be at least 10 characters long",
+    "error_max_length": "Suggestion cannot exceed 500 characters",
+    "error_email_invalid": "Please enter a valid email address",
+    "error_privacy_required": "Please agree to the privacy policy",
+    "error_network": "Network error: {message}. Please check your connection and try again."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "site": {
+    "title": "Farben online invertieren",
+    "description": "Kostenloses Online-Tool zum Invertieren von Bildfarben. Transformieren Sie Bilder sofort mit Negativeffekten, verbessern Sie die Barrierefreiheit und verarbeiten Sie Bilder lokal für vollständige Privatsphäre.",
+    "author": "Mark119M"
+  },
+  "buttons": {
+    "submit": "Absenden",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "download": "Herunterladen",
+    "upload": "Hochladen",
+    "reset": "Zurücksetzen",
+    "close": "Schließen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "previous": "Vorherige",
+    "loading": "Lädt...",
+    "processing": "Verarbeitung...",
+    "try_again": "Erneut versuchen"
+  },
+  "messages": {
+    "success": "Erfolgreich!",
+    "error": "Fehler aufgetreten",
+    "warning": "Warnung",
+    "info": "Information",
+    "loading": "Lädt...",
+    "no_data": "Keine Daten verfügbar",
+    "coming_soon": "Demnächst verfügbar"
+  },
+  "time": {
+    "just_now": "Gerade eben",
+    "minutes_ago": "vor {count} Minuten",
+    "hours_ago": "vor {count} Stunden",
+    "days_ago": "vor {count} Tagen",
+    "weeks_ago": "vor {count} Wochen",
+    "months_ago": "vor {count} Monaten",
+    "years_ago": "vor {count} Jahren"
+  },
+  "footer": {
+    "copyright": "Copyright © {year}",
+    "all_rights_reserved": "Alle Rechte vorbehalten.",
+    "social_links": "Soziale Links"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "image_inverter": {
+    "title": "Image Color Inverter",
+    "description": "Invert colors of your images instantly. Transform photos with negative effects for artistic purposes or accessibility needs.",
+    "instructions": {
+      "title": "How to use:",
+      "steps": [
+        "Upload an image or paste from clipboard (Ctrl+V)",
+        "The image will be automatically inverted",
+        "Use additional tools to flip or rotate if needed",
+        "Download the processed image"
+      ]
+    },
+    "upload": {
+      "title": "Upload Image",
+      "drag_drop": "Drag and drop an image here",
+      "or": "or",
+      "click_to_upload": "Click to upload",
+      "paste_clipboard": "Or paste from clipboard (Ctrl+V)",
+      "supported_formats": "Supported formats: JPG, PNG, GIF, WebP",
+      "max_size": "Maximum file size: 10MB"
+    },
+    "preview": {
+      "original": "Original",
+      "inverted": "Inverted",
+      "processing": "Processing image...",
+      "error": "Error processing image"
+    },
+    "actions": {
+      "invert": "Invert Colors",
+      "flip_horizontal": "Flip Horizontal",
+      "flip_vertical": "Flip Vertical",
+      "rotate_left": "Rotate Left",
+      "rotate_right": "Rotate Right",
+      "reset": "Reset",
+      "download": "Download Image"
+    },
+    "messages": {
+      "upload_success": "Image uploaded successfully",
+      "processing_complete": "Image processing complete",
+      "download_ready": "Image ready for download",
+      "error_upload": "Error uploading image",
+      "error_processing": "Error processing image",
+      "error_format": "Unsupported image format",
+      "error_size": "Image file is too large"
+    }
+  },
+  "convert_black_white": {
+    "title": "Convert Black Image to White",
+    "description": "Transform black images to white backgrounds instantly. Perfect for document processing and design work.",
+    "button_text": "Convert Black to White"
+  }
+}

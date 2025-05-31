@@ -1,0 +1,45 @@
+{
+  "site": {
+    "title": "Invert colors online",
+    "description": "Free online image color inverter tool. Transform images instantly with negative effects, improve accessibility, and process images locally for complete privacy.",
+    "author": "Mark119M"
+  },
+  "buttons": {
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "download": "Download",
+    "upload": "Upload",
+    "reset": "Reset",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "loading": "Loading...",
+    "processing": "Processing...",
+    "try_again": "Try Again"
+  },
+  "messages": {
+    "success": "Success!",
+    "error": "Error occurred",
+    "warning": "Warning",
+    "info": "Information",
+    "loading": "Loading...",
+    "no_data": "No data available",
+    "coming_soon": "Coming soon"
+  },
+  "time": {
+    "just_now": "Just now",
+    "minutes_ago": "{count} minutes ago",
+    "hours_ago": "{count} hours ago",
+    "days_ago": "{count} days ago",
+    "weeks_ago": "{count} weeks ago",
+    "months_ago": "{count} months ago",
+    "years_ago": "{count} years ago"
+  },
+  "footer": {
+    "copyright": "Copyright © {year}",
+    "all_rights_reserved": "All rights reserved.",
+    "social_links": "Social Links"
+  }
+}
