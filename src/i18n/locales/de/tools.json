@@ -1,7 +1,7 @@
 {
   "image_inverter": {
     "title": "Bildfarben-Inverter",
-    "description": "Invertieren Sie die Farben Ihrer Bilder sofort. Transformieren Sie Fotos mit Negativeffekten für künstlerische Zwecke oder Barrierefreiheit.",
+    "description": "Invertieren Sie die Farben Ihrer Bilder sofort. Transformieren Sie Fotos mit Negativeffekten für künstlerische Zwecke oder Barrierefreiheit.",r
     "instructions": {
       "title": "So verwenden Sie es:",
       "steps": [
@@ -49,5 +49,8 @@
     "title": "Schwarzes Bild zu Weiß konvertieren",
     "description": "Transformieren Sie schwarze Bilder sofort zu weißen Hintergründen. Perfekt für Dokumentenverarbeitung und Designarbeit.",
     "button_text": "Schwarz zu Weiß konvertieren"
+  },
+  "blog_posts": {
+    "how_to_invert_image_colors_online_in_3_seconds_with_flipix": "So kehren Sie Bildfarben online in 3 Sekunden mit Flipix um"
   }
 }

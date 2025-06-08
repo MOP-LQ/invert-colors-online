@@ -28,5 +28,8 @@
     "no_results": "Keine Beiträge gefunden",
     "results_found": "{count} Beiträge gefunden",
     "clear": "Suche löschen"
+  },
+  "blog_posts": {
+    "how_to_invert_image_colors_online_in_3_seconds_with_flipix": "So kehren Sie Bildfarben online in 3 Sekunden mit Flipix um"
   }
 }
