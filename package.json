@@ -5,6 +5,7 @@
   "engines": {
     "node": ">=18"
   },
+  "packageManager": "npm@9.6.7",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build && pagefind --site dist && node -e \"require('fs').cpSync('dist/pagefind', 'public/pagefind', {recursive: true})\"",

@@ -72,6 +72,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📝 Changelog
 
+### 2025-06-09
+- Fixed Cloudflare Pages deployment issue by explicitly setting packageManager to npm in package.json
+- Ensured consistent npm usage across all deployment platforms
+
 ### 2023-11-15
 - Standardized package management to use npm only
 - Removed pnpm-lock.yaml to avoid dependency conflicts
