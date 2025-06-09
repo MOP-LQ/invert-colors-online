@@ -70,4 +70,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
+## 📝 Changelog
+
+### 2023-11-15
+- Standardized package management to use npm only
+- Removed pnpm-lock.yaml to avoid dependency conflicts
+
+---
+
 Made with ❤️ for the web development community
