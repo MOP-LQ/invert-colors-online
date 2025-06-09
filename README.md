@@ -75,6 +75,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ### 2025-06-09
 - Fixed Cloudflare Pages deployment issue by explicitly setting packageManager to npm in package.json
 - Ensured consistent npm usage across all deployment platforms
+- Fixed JSON syntax error in German translation file (src/i18n/locales/de/tools.json)
 
 ### 2023-11-15
 - Standardized package management to use npm only
