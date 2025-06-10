@@ -72,6 +72,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📝 Changelog
 
+### 2025-01-27
+- Integrated Google AdSense advertising system
+- Added AdSense script to Layout.astro for monetization support
+- Positioned AdSense code in head section alongside Google Analytics
+
 ### 2025-06-09
 - Fixed Cloudflare Pages deployment issue by explicitly setting packageManager to npm in package.json
 - Ensured consistent npm usage across all deployment platforms
