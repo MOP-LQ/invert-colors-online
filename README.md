@@ -72,6 +72,20 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📝 Changelog
 
+### 2025-01-31
+- ✅ 集成Google AdSense广告系统
+  - 在Layout.astro的<head>部分添加AdSense脚本
+  - 脚本位置：Google Analytics代码之后
+  - 代码位置：src/layouts/Layout.astro第156-162行
+- ✅ 创建ads.txt文件用于Google AdSense验证
+  - 文件位置：public/ads.txt
+  - 包含Google AdSense发布商验证信息
+- ✅ 添加新的德语博客文章：Online-Farbinversion
+  - 文件：src/data/blog/online-farbinversion-einfachheit-und-effizienz-fuer-ihre-designs.md
+  - 主题：在线颜色反转工具的简单性和效率
+  - 标签：farbinversion, webdesign, accessibility, online-tools, grafikdesign, bildbearbeitung
+  - 包含完整的前置内容、目录结构和SEO优化描述
+
 ### 2025-01-27
 - Integrated Google AdSense advertising system
 - Added AdSense script to Layout.astro for monetization support
