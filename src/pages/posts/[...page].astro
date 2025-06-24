@@ -16,9 +16,14 @@ export const getStaticPaths = (async ({ paginate }) => {
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
+
+const canonicalUrl = new URL(
+  page.url.current.startsWith("/posts") ? "/posts" : page.url.current,
+  Astro.site
+);
 ---
 
-<Layout title={`Posts | ${SITE.title}`}>
+<Layout title={`Posts | ${SITE.title}`} canonicalURL={canonicalUrl.toString()}>
   <Header />
   <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
     <ul>
