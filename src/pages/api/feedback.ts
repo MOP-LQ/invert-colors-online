@@ -12,12 +12,64 @@ interface FeedbackData {
   page_url: string;
 }
 
+// Helper function to validate Supabase connection
+async function validateSupabaseConnection(): Promise<boolean> {
+  try {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'apikey': SUPABASE_ANON_KEY
+      }
+    });
+    return response.ok;
+  } catch (error) {
+    console.error('Supabase connection validation failed:', error);
+    return false;
+  }
+}
+
 export const POST: APIRoute = async ({ request }) => {
   console.log('Feedback API: Received POST request');
   try {
+    // Validate Supabase connection first
+    const isConnectionValid = await validateSupabaseConnection();
+    if (!isConnectionValid) {
+      console.error('Feedback API: Supabase connection failed validation');
+      return new Response(
+        JSON.stringify({
+          success: false,
+          message: 'Database connection error, please try again later'
+        }),
+        {
+          status: 503, // Service Unavailable
+          headers: { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        }
+      );
+    }
+
     // Parse request body
-    const body: FeedbackData = await request.json();
-    console.log('Feedback API: Parsed request body:', body);
+    let body: FeedbackData;
+    try {
+      body = await request.json();
+      console.log('Feedback API: Parsed request body:', body);
+    } catch (parseError) {
+      console.error('Feedback API: JSON parse error:', parseError);
+      return new Response(
+        JSON.stringify({
+          success: false,
+          message: 'Invalid request format'
+        }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+    }
 
     // Validate required fields
     if (!body.suggestion || body.suggestion.trim().length < 10) {
@@ -67,75 +119,113 @@ export const POST: APIRoute = async ({ request }) => {
     const feedbackData = {
       suggestion: body.suggestion.trim(),
       email: body.email?.trim() || null,
-      timestamp: body.timestamp,
-      user_agent: body.user_agent,
-      page_url: body.page_url,
+      timestamp: body.timestamp || new Date().toISOString(), // Fallback if timestamp is missing
+      user_agent: body.user_agent || 'Not provided',
+      page_url: body.page_url || 'Not provided',
       status: 'new',
       created_at: new Date().toISOString()
     };
 
-    // Submit to Supabase
+    // Submit to Supabase with timeout
     console.log('Feedback API: Submitting to Supabase:', feedbackData);
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/feedback`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-        'apikey': SUPABASE_ANON_KEY,
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify(feedbackData)
-    });
-    console.log('Feedback API: Supabase response status:', response.status);
+    
+    // Use AbortController to implement timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    
+    try {
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'apikey': SUPABASE_ANON_KEY,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(feedbackData),
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      console.log('Feedback API: Supabase response status:', response.status);
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Supabase error:', errorText);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Supabase error:', errorText);
 
+        return new Response(
+          JSON.stringify({
+            success: false,
+            message: 'Database error, please try again later'
+          }),
+          {
+            status: 502, // Bad Gateway - more accurate for external service failure
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            }
+          }
+        );
+      }
+
+      // Success response
+      console.log('Feedback API: Returning success response');
       return new Response(
         JSON.stringify({
-          success: false,
-          message: 'Database error, please try again later'
+          success: true,
+          message: 'Feedback submitted successfully! Thank you for your suggestion.'
         }),
         {
-          status: 500,
+          status: 200,
           headers: {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type'
           }
         }
       );
-    }
-
-    // Success response
-    console.log('Feedback API: Returning success response');
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: 'Feedback submitted successfully! Thank you for your suggestion.'
-      }),
-      {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type'
-        }
+    } catch (fetchError: unknown) {
+      clearTimeout(timeoutId);
+      console.error('Feedback API: Fetch error:', fetchError);
+      
+      // Check if the error was due to timeout
+      if (fetchError instanceof Error && fetchError.name === 'AbortError') {
+        return new Response(
+          JSON.stringify({
+            success: false,
+            message: 'Request timed out, please try again later'
+          }),
+          {
+            status: 504, // Gateway Timeout
+            headers: { 'Content-Type': 'application/json' }
+          }
+        );
       }
-    );
+      
+      throw fetchError; // Re-throw to be caught by outer try-catch
+    }
 
   } catch (error) {
     console.error('Feedback API error:', error);
 
+    // Determine if error has a message property
+    let errorMessage = 'Server error, please try again later';
+    if (error instanceof Error) {
+      errorMessage = `Server error: ${error.message}`;
+    }
+
     return new Response(
       JSON.stringify({
         success: false,
-        message: 'Server error, please try again later'
+        message: errorMessage
       }),
       {
         status: 500,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
       }
     );
   }
